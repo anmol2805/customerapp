@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.anmol.dragmark.NavActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:background="@color/white"
+            >
+
+            <LinearLayout
+                android:id="@+id/l1"
+                android:layout_width="350dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/search_dr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button"
+                    android:elevation="@dimen/activity_vertical_margin"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/doctorn"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/order_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button"
+                    android:elevation="@dimen/activity_vertical_margin"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/medicinen"
+                    android:textColor="#3F51B5"
+                    android:textSize="20sp"
+
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/hospitals"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button"
+                    android:elevation="@dimen/activity_vertical_margin"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hospitaln"
+                    android:textColor="#3F51B5"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp"
+                android:background="@color/transparent"
+                >
+
+                <TextView
+                    android:id="@+id/sd"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Search Doctor"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:clickable="true"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/med"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:text="Medicines"
+                    android:clickable="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/hosp"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Hospitals"
+                    android:clickable="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l2"
+                android:layout_width="350dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/booksc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button"
+                    android:elevation="@dimen/activity_vertical_margin"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/diagnostic_labn"
+                    android:textColor="#3F51B5"
+                    android:textSize="20sp"
+
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/bookbt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button"
+                    android:elevation="@dimen/activity_vertical_margin"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/blood_testn"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/surgery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button"
+                    android:elevation="@dimen/activity_vertical_margin"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sugicalsn"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/transparent"
+                >
+
+                <TextView
+                    android:id="@+id/dl"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="Diagnostic Labs"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:clickable="true"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bt"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Blood Tests"
+                    android:clickable="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sg"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Surgicals"
+                    android:clickable="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewpager"
+        android:layout_above="@+id/rl"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/apptoolbar"
+        >
+
+
+    </android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:id="@+id/sliderdots"
+        android:layout_marginBottom="5dp"
+
+        android:layout_alignBottom="@+id/viewpager"
+        >
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl1"
+        android:layout_above="@+id/rl"
+        android:layout_alignParentTop="true"
+        >
+
+        <ImageView
+
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/medical2" />
+
+        <ImageView
+
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/medical1" />
+
+        <ImageView
+
+            android:id="@+id/imageView6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/medical" />
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+</RelativeLayout>

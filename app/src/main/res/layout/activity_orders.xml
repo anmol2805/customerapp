@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.anmol.dragmark.Orders"
+    android:orientation="vertical"
+    >
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/ordereddatep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="xx-xx-xxxx"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <TextView
+                android:id="@+id/deliveryaddressp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ordereddatep"
+                android:layout_margin="5dp"
+                android:text="Delivery Address"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="italic"
+                />
+
+            <ImageView
+                android:id="@+id/statusp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                app:srcCompat="@android:drawable/ic_notification_overlay" />
+
+            <TextView
+                android:id="@+id/chemistdetp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chemist Details"
+                android:layout_below="@+id/deliveryaddressp"
+                android:layout_alignRight="@+id/statusp"
+                android:layout_alignEnd="@+id/statusp"
+
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/ordereddate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xx-xx-xxxx"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <TextView
+                android:id="@+id/deliveryaddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivery Address"
+                android:layout_below="@id/ordereddate"
+                android:layout_margin="5dp"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+            <TextView
+                android:id="@+id/ordercompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completion Date"
+                android:layout_below="@id/deliveryaddress"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/colorAccent"
+                />
+
+            <ImageView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                app:srcCompat="@drawable/done5" />
+
+            <TextView
+                android:id="@+id/chemistdet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignBaseline="@+id/ordercompleted"
+                android:text="Chemist Details"
+                android:layout_margin="5dp"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
