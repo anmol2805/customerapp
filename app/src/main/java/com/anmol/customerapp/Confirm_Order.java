@@ -207,7 +207,7 @@ public class Confirm_Order extends AppCompatActivity {
                             @Override
                             public void onKeyEntered(String key, GeoLocation location) {
                                 if(!status){
-                                    Toast.makeText(Confirm_Order.this,key+"location found", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Confirm_Order.this,"location found", Toast.LENGTH_SHORT).show();
                                     status = true;
                                 }
                             }

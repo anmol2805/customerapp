@@ -6,15 +6,24 @@ package com.anmol.customerapp;
 
 public class OrdModel {
     String date,address,name,oid;
-
+    boolean status;
     public OrdModel() {
     }
 
-    public OrdModel(String date, String address, String name, String oid) {
+    public OrdModel(String date, String address, String name, String oid,Boolean status) {
         this.date = date;
         this.address = address;
         this.name = name;
         this.oid = oid;
+        this.status = status;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public String getDate() {

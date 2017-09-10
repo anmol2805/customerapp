@@ -75,7 +75,8 @@
         </service>
 
         <activity android:name=".Confirm_Order" />
-        <activity android:name=".Pending_Orders"></activity>
+        <activity android:name=".Pending_Orders" />
+        <activity android:name=".Track_order"></activity>
     </application>
 
 </manifest>
