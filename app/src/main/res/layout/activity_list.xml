@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.anmol.dragmark.ListActivity">
+    tools:context="com.anmol.customerapp.ListActivity">
 
     <android.support.v7.widget.CardView
         android:id="@+id/address"
@@ -13,32 +13,52 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView4"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/editg"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Delivery to this Address"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:layout_toLeftOf="@+id/imageView"
+                android:layout_toStartOf="@+id/imageView"
+                >
 
-            <TextView
-                android:id="@+id/deladd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="H.no B-88/A, Priyadarshani Colony, Dumna Road, Airport Road,Jabalpur,Madhya Pradesh"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp"
-                android:textStyle="italic" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Delivery to this Address"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/deladd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="H.no B-88/A, Priyadarshani Colony, Dumna Road, Airport Road,Jabalpur,Madhya Pradesh"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 
     <EditText
@@ -66,25 +86,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/previewimg"
-            android:layout_toLeftOf="@+id/listimg"
-            android:layout_toStartOf="@+id/listimg"
+
             android:padding="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_above="@+id/listimg"
+            />
+
+        <ImageButton
+            android:id="@+id/firstadd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/listimg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:src="@drawable/add"
+            android:background="@color/transparent"
             />
 
         <LinearLayout
+            android:id="@+id/listimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listimg"
-            android:orientation="vertical"
-            android:layout_marginRight="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="#dcf8c6"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:orientation="horizontal"
 
-            >
+            android:weightSum="1">
 
             <ImageButton
                 android:id="@+id/browse"
@@ -94,31 +125,27 @@
                 android:background="@drawable/round_button"
                 android:src="@drawable/attach"
 
-                />
+
+                 />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
 
             <ListView
                 android:id="@+id/listview"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                >
+                android:visibility="gone">
 
             </ListView>
 
 
         </LinearLayout>
 
-
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/previewlist"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -137,7 +164,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/round_button"
-            android:text="Confirm Order"
+            android:text="Place Order"
             android:textColor="@color/colorPrimary"
             />
 

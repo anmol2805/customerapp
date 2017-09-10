@@ -243,11 +243,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "1070871661084-nbgd1klqtgianu0gsaagaqaalh0a43k1.apps.googleusercontent.com",
+          "client_id": "1070871661084-qcgidtg7d2eg9d3o8jk5q107so7313l9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anmol.customerapp",
+            "certificate_hash": "34b96318831da91a55cfc5aec7fc8ca64a04c83c"
+          }
+        },
+        {
+          "client_id": "1070871661084-pjfh77g5b58bselk05pc18mobhr2cv79.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.anmol.customerapp",
             "certificate_hash": "ad881bce75a03ca90edb9a7c9198df31cd8cceab"
+          }
+        },
+        {
+          "client_id": "1070871661084-lm3t06g8s29h6bs5skhj175o4jot6tfp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anmol.customerapp",
+            "certificate_hash": "a03fa1cee1cf2412ce91c65c212248b815c6a1bf"
           }
         },
         {
@@ -272,6 +288,68 @@
               "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070871661084:android:3401bb14f9ec4f80",
+        "android_client_info": {
+          "package_name": "com.example.rakhi.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070871661084-fjuoh3d0j50k9jhp105nf54e1lu0sibb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeA2QxiWDnJm_kFNiAFc9NCSvGR-_JOfE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070871661084:android:27983c939136bb8b",
+        "android_client_info": {
+          "package_name": "com.example.rakhi.expand"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070871661084-fjuoh3d0j50k9jhp105nf54e1lu0sibb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeA2QxiWDnJm_kFNiAFc9NCSvGR-_JOfE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

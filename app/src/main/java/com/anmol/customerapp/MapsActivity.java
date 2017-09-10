@@ -1,6 +1,7 @@
 package com.anmol.customerapp;
 
-import android.*;
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,13 +11,17 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -26,6 +31,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.anmol.customerapp.Services.ChangeService;
+import com.firebase.geofire.GeoFire;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -40,12 +47,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
     public static boolean mMapIsTouched = false;
     private GoogleMap mMap;
     LocationManager locationManager;
@@ -74,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     DatabaseReference databaseReference, mGeoDatabase;
     ImageView img;
     long time = 1000 * 60 * 1;
-
+    GeoFire geoFire;
     double lattitude, longitude;
     FloatingActionButton myloc;
     GestureDetector gestureDetector;
@@ -82,17 +92,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     DatabaseReference ordersdata;
     FirebaseAuth auth;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        auth = FirebaseAuth.getInstance();
+        //ActivityCompat.requestPermissions(this, permissions, 100);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        myloc = (FloatingActionButton)findViewById(R.id.setmyloc);
+        set = (Button) findViewById(R.id.confirm);
+        myloc = (FloatingActionButton) findViewById(R.id.setmyloc);
+        //setmyloc = (Button)findViewById(R.id.setmyloc);
+        img = (ImageView) findViewById(R.id.confirm_address_map_custom_marker);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+        }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().getRoot().child("location");
+        geoFire = new GeoFire(FirebaseDatabase.getInstance().getReference().getRoot());
+        mGeoDatabase = FirebaseDatabase.getInstance().getReference().getRoot();
+
         PlaceAutocompleteFragment places = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.textauto);
         places.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -121,6 +145,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(Double.parseDouble(placelat),Double.parseDouble(placelog), 1);
+                    String add = addressList.get(0).getAddressLine(0);
+                    String loc = addressList.get(0).getLocality();
+                    String state = addressList.get(0).getAdminArea();
+                    String post = addressList.get(0).getPostalCode();
+                    String kn = addressList.get(0).getFeatureName();
+                    String str = add + "," + loc + "," + state + "," + post;
+                    placename = str;
+                    } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(MapsActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(MapsActivity.this);
+                }
+                builder.setCancelable(false);
+                builder.setTitle("Confirm location")
+                        .setMessage(placename)
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Bundle bundle = new Bundle();
+                                bundle.putDouble("latitude", Double.parseDouble(placelat));
+                                bundle.putDouble("longitude", Double.parseDouble(placelog));
+                                Intent intent = new Intent(MapsActivity.this,ListActivity.class);
+                                intent.putExtra("address",placename);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+
+                            }
+                        })
+                        .setNegativeButton("Change Location", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
+            }
+        });
+
+
+
     }
 
 
@@ -141,7 +214,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setBuildingsEnabled(true);
         mMap.setIndoorEnabled(true);
         latLng = new LatLng(28.632907, 77.21957);
-        CameraPosition INIT =
+        final CameraPosition INIT =
                 new CameraPosition.Builder()
                         .target(latLng)
                         .zoom(13)
@@ -150,12 +223,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMaxZoomPreference(20);
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(INIT));
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(INIT));
+
         myloc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-                if (ActivityCompat.checkSelfPermission(view.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -167,7 +241,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     Toast.makeText(MapsActivity.this, "Please wait while we are finding your location", Toast.LENGTH_LONG).show();
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,0, new LocationListener() {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000,0, new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
                             lat = location.getLatitude();
@@ -223,6 +297,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
+
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(final CameraPosition cameraPosition) {
@@ -232,28 +308,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void run() {
                         if(!mMapIsTouched){
+                            Intent intent = new Intent(MapsActivity.this,ChangeService.class);
+
                             Log.i("centerLat", String.valueOf(cameraPosition.target.latitude));
 
                             Log.i("centerLong", String.valueOf(cameraPosition.target.longitude));
                             lattitude = cameraPosition.target.latitude;
                             longitude = cameraPosition.target.longitude;
-                            Geocoder geocoder = new Geocoder(getApplicationContext());
-                            try {
-                                List<Address> addressList = geocoder.getFromLocation(cameraPosition.target.latitude, cameraPosition.target.longitude, 1);
-                                String add = addressList.get(0).getAddressLine(0);
-                                String loc = addressList.get(0).getLocality();
-                                String state = addressList.get(0).getAdminArea();
-                                String post = addressList.get(0).getPostalCode();
-                                String kn = addressList.get(0).getFeatureName();
-                                String str = add + "," + loc + "," + state + "," + post;
-                                placename = str;
-                                placelat = String.valueOf(cameraPosition.target.latitude);
-                                placelog = String.valueOf(cameraPosition.target.longitude);
-                                Toast.makeText(MapsActivity.this, placename, Toast.LENGTH_SHORT).show();
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            placelat = String.valueOf(cameraPosition.target.latitude);
+                            placelog = String.valueOf(cameraPosition.target.longitude);
+//                            Geocoder geocoder = new Geocoder(getApplicationContext());
+//                            try {
+//                                List<Address> addressList = geocoder.getFromLocation(cameraPosition.target.latitude, cameraPosition.target.longitude, 1);
+//                                String add = addressList.get(0).getAddressLine(0);
+//                                String loc = addressList.get(0).getLocality();
+//                                String state = addressList.get(0).getAdminArea();
+//                                String post = addressList.get(0).getPostalCode();
+//                                String kn = addressList.get(0).getFeatureName();
+//                                String str = add + "," + loc + "," + state + "," + post;
+//                                placename = str;
+//                                placelat = String.valueOf(cameraPosition.target.latitude);
+//                                placelog = String.valueOf(cameraPosition.target.longitude);
+//                                //Toast.makeText(MapsActivity.this, placename, Toast.LENGTH_SHORT).show();
+//
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
 
                         }
 
@@ -268,7 +348,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
+
     }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -277,6 +360,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             int length = grantResults.length;
         }
     }
+
+    private void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Class conmanClass = Class.forName(conman.getClass().getName());
+        final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
+        connectivityManagerField.setAccessible(true);
+        final Object connectivityManager = connectivityManagerField.get(conman);
+        final Class connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+        final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+        setMobileDataEnabledMethod.setAccessible(true);
+
+        setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+    }
+
     private void buildAlertMessageNoGps() {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
@@ -295,5 +392,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         alert.show();
     }
 
+    private void buildAlertMessageNoInternet() {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage("Please ensure that your internet connection is enabled")
+                .setCancelable(false)
+                .setPositiveButton("Enable", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(Settings.ACTION_SETTINGS));
+                    }
+                }).setNegativeButton("Already Enabled", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        final android.app.AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
 }
+

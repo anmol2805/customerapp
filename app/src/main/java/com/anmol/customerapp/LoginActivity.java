@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_login);
         auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser()!=null){
+
             Intent intent = new Intent(LoginActivity.this,MenuActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -128,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.i(TAG,"Login was successful in Firebase");
             Log.i(TAG,"UID "+ user.getUid());
 
-            Intent intent = new Intent(this,MenuActivity.class);
+            Intent intent = new Intent(this,PhoneVerification.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

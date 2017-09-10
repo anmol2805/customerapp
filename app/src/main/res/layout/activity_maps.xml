@@ -70,7 +70,7 @@
         android:layout_alignRight="@+id/relativeLayout"
         android:clickable="true"
         map:backgroundTint="#fff"
-        map:fabSize="mini"
+        map:fabSize="normal"
 
         map:srcCompat="@drawable/myloc" />
 
