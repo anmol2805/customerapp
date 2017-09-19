@@ -48,7 +48,7 @@ public class Track_order extends AppCompatActivity {
     RecyclerView prv;
     MyAdapter madapter;
     TextView acc, duem;
-    ImageButton call;
+    ImageButton call,chat;
     String dial;
     private static final int MY_PERMISSIONS_REQUEST = 123;
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +62,16 @@ public class Track_order extends AppCompatActivity {
         acc = (TextView) findViewById(R.id.acc);
         duem = (TextView) findViewById(R.id.due);
         call = (ImageButton) findViewById(R.id.call);
+        chat = (ImageButton) findViewById(R.id.chat);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("orders").child("customers").child(auth.getCurrentUser().getUid()).child(getIntent().getStringExtra("pos"));
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String accepted = dataSnapshot.child("accepted_by").getValue().toString();
-                String due = dataSnapshot.child("due").getValue().toString();
-                dial = dataSnapshot.child("chemistphone").getValue().toString();
-                acc.setText(accepted);
-                duem.setText(due);
+//                String accepted = dataSnapshot.child("accepted_by").getValue().toString();
+//                String due = dataSnapshot.child("due").getValue().toString();
+//                dial = dataSnapshot.child("chemistphone").getValue().toString();
+//                acc.setText(accepted);
+//                duem.setText(due);
 
             }
 
@@ -94,6 +95,17 @@ public class Track_order extends AppCompatActivity {
                     startActivity(intent);
                 }
 
+            }
+        });
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(Track_order.this);
+                dialog.setContentView(R.layout.chat);
+                /*
+                Your code here
+                 */
+                dialog.show();
             }
         });
         databaseReference.child("presuploaded").addValueEventListener(new ValueEventListener() {

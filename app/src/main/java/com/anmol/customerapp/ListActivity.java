@@ -238,6 +238,7 @@ public class ListActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(ListActivity.this,Confirm_Order.class);
                 Bundle b = new Bundle();
+                b.putString("des",description.getText().toString());
                 b.putString("loc",getIntent().getStringExtra("address"));
                 b.putDouble("lat",latitudec);
                 b.putDouble("log",longitudec);

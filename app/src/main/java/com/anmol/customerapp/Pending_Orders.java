@@ -39,20 +39,19 @@ public class Pending_Orders extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ordModels.clear();
-                size = 0;
-                for(DataSnapshot data:dataSnapshot.getChildren()){
-                    size++;
-                }
-                for (int i = size-1;i>=0;i--){
 
-                    String date = dataSnapshot.child(String.valueOf(i)).child("date").getValue().toString();
-                    String add = dataSnapshot.child(String.valueOf(i)).child("address").getValue().toString();
-                    String name = dataSnapshot.child(String.valueOf(i)).child("name").getValue().toString();
-                    Boolean status = (Boolean) dataSnapshot.child(String.valueOf(i)).child("status").getValue();
-                    String oid = String.valueOf(i);
+                for(DataSnapshot data:dataSnapshot.getChildren()){
+                    String date = data.child("date").getValue().toString();
+                    String add = data.child("address").getValue().toString();
+                    String name = data.child("name").getValue().toString();
+                    Boolean status = (Boolean) data.child("status").getValue();
+                    String oid = data.getKey();
                     OrdModel ordModel = new OrdModel(date,add,name,oid,status);
                     ordModels.add(ordModel);
                 }
+
+
+
                 ItemClickListener itemClickListener = new ItemClickListener() {
                     @Override
                     public void onItemClick(int pos) {

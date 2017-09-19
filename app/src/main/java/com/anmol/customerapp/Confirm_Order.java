@@ -72,6 +72,7 @@ public class Confirm_Order extends AppCompatActivity {
     String add;
     DatabaseReference customerdet,orderdet,reqdatabase,newdatabase,oto;
     String newkey;
+    String description;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +88,7 @@ public class Confirm_Order extends AppCompatActivity {
         phone.setText(auth.getCurrentUser().getPhoneNumber());
         Bundle b = getIntent().getExtras();
         add= b.getString("loc");
+        description = b.getString("des");
         address.setText(add);
         latitudec = (double) b.get("lat");
         longitudec = (double)b.get("log");
@@ -210,6 +212,7 @@ public class Confirm_Order extends AppCompatActivity {
                 m.put("date",formattedDate);
                 m.put("name",auth.getCurrentUser().getDisplayName());
                 m.put("address",add);
+                m.put("description",description);
                 m.put("phone",auth.getCurrentUser().getPhoneNumber());
                 m.put("phone2",phone2.getText().toString());
                 m.put("status",false);
@@ -279,8 +282,8 @@ public class Confirm_Order extends AppCompatActivity {
                 Intent intent = new Intent(Confirm_Order.this,Pending_Orders.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                //startActivity(intent);
-                //finish();
+                startActivity(intent);
+                finish();
 
             }
         });

@@ -43,7 +43,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         holder.name.setText(ordModels.get(position).getName());
         holder.add.setText(ordModels.get(position).getAddress());
         holder.date.setText(ordModels.get(position).getDate());
-        holder.oid.setText(auth.getCurrentUser().getUid() + "_" + ordModels.get(position).getOid());
+        holder.oid.setText(ordModels.get(position).getOid());
         if(ordModels.get(position).isStatus()){
             holder.track.setVisibility(View.VISIBLE);
         }
