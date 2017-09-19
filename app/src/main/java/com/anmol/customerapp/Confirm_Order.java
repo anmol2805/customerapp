@@ -68,8 +68,10 @@ public class Confirm_Order extends AppCompatActivity {
     double lat=28.642317361385285,log=77.21725802868605;
     double latitudec,longitudec;
     DatabaseReference to,authdata;
-    int size = 0;
+    int size = 0,csize;
     String add;
+    DatabaseReference customerdet,orderdet,reqdatabase,newdatabase,oto;
+    String newkey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,7 @@ public class Confirm_Order extends AppCompatActivity {
                     size++;
                 }
                 to = ordersdata.child(auth.getCurrentUser().getUid()).child(String.valueOf(size)).child("presuploaded");
+                customerdet = ordersdata.child(auth.getCurrentUser().getUid()).child(String.valueOf(size));
             }
 
             @Override
@@ -185,64 +188,20 @@ public class Confirm_Order extends AppCompatActivity {
 
             }
         });
+
+        reqdatabase = FirebaseDatabase.getInstance().getReference().child("orders").child("request");
+        newdatabase = reqdatabase.child("new");
         co.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                geoFirec = new GeoFire(ordersdata.child(auth.getCurrentUser().getUid()).child(String.valueOf(size)));
-                geoFirec.setLocation("location",new GeoLocation(latitudec,longitudec));
-                geoFired = new GeoFire(chemistdata);
-                geoFired.setLocation(auth.getCurrentUser().getUid()+"_"+radius,new GeoLocation(lat,log));
+                newkey = ordersdata.child(auth.getCurrentUser().getUid()).push().getKey();
                 DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("tokens").child(auth.getCurrentUser().getUid());
                 String token = FirebaseInstanceId.getInstance().getToken();
                 Map<String,Object> map = new HashMap<>();
                 map.put("token",token);
                 tokens.updateChildren(map);
-                geoFired.getLocation(auth.getCurrentUser().getUid() + "_" + radius, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(String key, GeoLocation location) {
-                        geoLocation = location;
-                        GeoQuery geoQuery = geoFirec.queryAtLocation(geoLocation,radius);
-                        geoQuery.removeAllListeners();
-                        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-                            @Override
-                            public void onKeyEntered(String key, GeoLocation location) {
-                                if(!status){
-                                    Toast.makeText(Confirm_Order.this,"location found", Toast.LENGTH_SHORT).show();
-                                    status = true;
-                                }
-                            }
 
-                            @Override
-                            public void onKeyExited(String key) {
-
-                            }
-
-                            @Override
-                            public void onKeyMoved(String key, GeoLocation location) {
-
-                            }
-
-                            @Override
-                            public void onGeoQueryReady() {
-                                if(!status){
-                                    Toast.makeText(Confirm_Order.this,"Not found", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-
-                            @Override
-                            public void onGeoQueryError(DatabaseError error) {
-
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                movePres(databaseReference,to);
+                movePres(databaseReference,ordersdata.child(auth.getCurrentUser().getUid()).child(newkey).child("presuploaded"));
                 Calendar c = Calendar.getInstance();
                 System.out.println("Current time => " + c.getTime());
                 SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -254,13 +213,74 @@ public class Confirm_Order extends AppCompatActivity {
                 m.put("phone",auth.getCurrentUser().getPhoneNumber());
                 m.put("phone2",phone2.getText().toString());
                 m.put("status",false);
-                ordersdata.child(auth.getCurrentUser().getUid()).child(String.valueOf(size)).updateChildren(m);
+                ordersdata.child(auth.getCurrentUser().getUid()).child(newkey).updateChildren(m);
                 databaseReference.removeValue();
+
+                geoFirec = new GeoFire(ordersdata.child(auth.getCurrentUser().getUid()).child(newkey));
+                geoFirec.setLocation("location",new GeoLocation(latitudec,longitudec));
+                final GeoFire geoFire = new GeoFire(ordersdata.child(auth.getCurrentUser().getUid()).child(newkey).child("location"));
+                DatabaseReference geodata = FirebaseDatabase.getInstance().getReference().getRoot().child("orders").child("chemistlocation");
+                geoFired = new GeoFire(geodata);
+
+                chemistdata.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (final DataSnapshot data:dataSnapshot.getChildren()){
+                            final String str = data.getKey();
+
+
+                            GeoFire fgeo = new GeoFire(chemistdata.child(str));
+                            String substring = str.length() > 2 ? str.substring(str.length() - 2) : str;
+                            final int rad = Integer.parseInt(substring);
+
+                            GeoQuery geoQuery = fgeo.queryAtLocation(new GeoLocation(latitudec,longitudec),rad);
+                            geoQuery.removeAllListeners();
+                            geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+                                @Override
+                                public void onKeyEntered(String key, GeoLocation location) {
+
+
+                                    key = key.substring(0,key.length()-3);
+                                    String id = newdatabase.child(key).push().getKey();
+                                    movePres(ordersdata.child(auth.getCurrentUser().getUid()).child(newkey),newdatabase.child(key).child(id));
+
+                                }
+
+                                @Override
+                                public void onKeyExited(String key) {
+
+                                }
+
+                                @Override
+                                public void onKeyMoved(String key, GeoLocation location) {
+
+                                }
+
+                                @Override
+                                public void onGeoQueryReady() {
+
+                                }
+
+                                @Override
+                                public void onGeoQueryError(DatabaseError error) {
+
+                                }
+                            });
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 Intent intent = new Intent(Confirm_Order.this,Pending_Orders.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+                //startActivity(intent);
+                //finish();
 
             }
         });
