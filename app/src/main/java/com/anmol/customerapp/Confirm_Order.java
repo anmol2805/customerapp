@@ -216,6 +216,8 @@ public class Confirm_Order extends AppCompatActivity {
                 m.put("phone",auth.getCurrentUser().getPhoneNumber());
                 m.put("phone2",phone2.getText().toString());
                 m.put("status",false);
+                m.put("uid",auth.getCurrentUser().getUid());
+                m.put("oid",newkey);
                 ordersdata.child(auth.getCurrentUser().getUid()).child(newkey).updateChildren(m);
                 databaseReference.removeValue();
 

@@ -49,7 +49,7 @@ public class Track_order extends AppCompatActivity {
     MyAdapter madapter;
     TextView acc, duem;
     ImageButton call,chat;
-    String dial;
+    String dial,dialland;
     private static final int MY_PERMISSIONS_REQUEST = 123;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +67,12 @@ public class Track_order extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                String accepted = dataSnapshot.child("accepted_by").getValue().toString();
-//                String due = dataSnapshot.child("due").getValue().toString();
-//                dial = dataSnapshot.child("chemistphone").getValue().toString();
-//                acc.setText(accepted);
-//                duem.setText(due);
+                String accepted = dataSnapshot.child("accepted_by").getValue().toString();
+                String due = dataSnapshot.child("due").getValue().toString();
+                dial = dataSnapshot.child("chemistphone").getValue().toString();
+                dialland = dataSnapshot.child("chemistland").getValue().toString();
+                acc.setText(accepted);
+                duem.setText(due);
 
             }
 
@@ -83,17 +84,25 @@ public class Track_order extends AppCompatActivity {
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
+                Dialog dialog = new Dialog(Track_order.this);
+                dialog.setContentView(R.layout.dial);
+                TextView cont = (TextView)dialog.findViewById(R.id.mcont);
+                TextView land = (TextView)dialog.findViewById(R.id.mland);
+                cont.setText("+91"+dial);
+                land.setText(dialland);
+                dialog.show();
 
-                intent.setData(Uri.parse("tel:" + dial));
-                if (ActivityCompat.checkSelfPermission(Track_order.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Track_order.this,
-                            new String[]{Manifest.permission.CALL_PHONE},
-                            MY_PERMISSIONS_REQUEST);
-
-                }else{
-                    startActivity(intent);
-                }
+//                Intent intent = new Intent(Intent.ACTION_CALL);
+//
+//                intent.setData(Uri.parse("tel:" + dial));
+//                if (ActivityCompat.checkSelfPermission(Track_order.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(Track_order.this,
+//                            new String[]{Manifest.permission.CALL_PHONE},
+//                            MY_PERMISSIONS_REQUEST);
+//
+//                }else{
+//                    startActivity(intent);
+//                }
 
             }
         });
